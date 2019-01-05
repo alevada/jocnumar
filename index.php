@@ -1,4 +1,5 @@
 <?php
+	$random_number = rand (1, 1000);
 	/*$content = "222";
 	if(isset($_POST["number"]) && !empty($_POST["number"])) {
 		$content = "Your nr. is: ". $_POST['number']. "<br />" . $content ;
@@ -32,34 +33,65 @@
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	    <!-- Latest compiled JavaScript -->
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	    <title> NUMBER GAME </title>
+	    <title> GAME </title>
 	</head>
 	<body>
-		<h2 align="center"> NUMBER GAME <BR><BR><BR></h2>
-		<div class="container form-group">
-			<form class="form-horizontal" id="submit_number" role="form">
-				<label class="control-label col-sm-2" for="input1">Please enter a number between 1 and 1000 here: </label>
-				<div class="col-xs-3">
-					<input class="form-control" id="number" name="number" type="number" min="1" max="1000" required>
-				</div>
-				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-default">Submit</button>
-				</div>
-				<div class="" id="message_container"></div>
-			</form>
-		</div>
+		<h3 align="center" style="margin: 100px 0;"> NUMBER GAME </h3>
+		<form class="form-horizontal" id="submit_number" role="form">
+			<div class="row" id="lbl" disabled="disabled">
+				<label class="control-label col-sm-4" for="input1">Please enter a number between 1 and 1000, here: </label>
+			    <div class="col-sm-6">
+			        <div class="input-group">
+			            <input class="form-control" id="number" name="number" type="number" min="1" max="1000" required="">
+			            <span class="input-group-btn">
+			                <button id="submit_button" class="btn btn-default" type="submit"> <b>Guess my number!</b></button>
+			            </span>
+			        </div>
+			    </div>
+			</div>
+			<div class="row">
+				<hr/>
+				<label class="control-label col-sm-4"></label>
+				<div class="col-sm-6" id="message_container" style="overflow-y: auto; height:360px;"></div>
+			</div>
+		</form>
 	</body>
 </html>
 
 <script type="text/javascript">
-	//$(document).on("submit", "#myForm", function() {
 	$('#submit_number').submit(function(e) {
 		e.preventDefault();
 
-		var current_content = $("#message_container").html();
-		var number = $("#number").val();
+		var current_content 		= $("#message_container").html();
+		var number 					= $("#number").val();
+		var generated_random_number = <?= $random_number; ?>;
+		var new_content 			= 'You entered: <strong>' + number + "</strong><br/>";
 
-		$.ajax({
+
+
+    	if (number < generated_random_number) {
+    		var diff = Math.trunc(generated_random_number / number);
+			
+			new_content += "<strong> My number is "+(diff > 1 ? (diff+"x ") : "")+"bigger.</strong>";
+
+    	} else if (number > generated_random_number) {
+    		var diff = Math.trunc(number / generated_random_number);
+
+    		new_content += "<strong> My number is "+(diff > 1 ? (diff+"x ") : "")+"smaller.</strong>";
+
+    	} else {
+    		new_content += "<strong> !! CONGRATS !! You guessed my number.";
+
+    		$("#number").attr('disabled', 'disabled');
+    		$("#submit_button").attr('disabled', 'disabled');
+    	}
+
+    	new_content += "<br/><hr/>" + current_content;
+
+    	$("#message_container").html(new_content);
+    	$("#number").val('');
+
+		/*$.ajax({
 		    'url' : 'handler.php',
 		    'type' : 'POST',
 		    'data' : {
@@ -67,26 +99,16 @@
 		    	number: number
 		    },
 		    success: function(response){
-		    	var new_content = 'You entered number: ' + response + "<br/><br/>" + current_content;
-
+		    	var new_content = 'You entered: <strong>' + response + "</strong><br/><br/><hr/>" + current_content;
+		    	if (a==b) {
+		    		var new_content = 'congrats !!!';
+		    	}
 		    	$("#message_container").html(new_content);
 		    	$("#number").val('');
 		    },
-		});
+
+
+		});*/
 	});
 
-
-
-
-	/*
-	$.ajax({
-	   type: 'POST',
-	   url: '/SomeUrl/MyResource.php',
-	   data: JSON.stringify({ text: html }),
-	   success: function(response)
-	   {
-	      alert('Ajax call successful!');
-	   }
-	});
-	}*/
 </script>
