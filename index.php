@@ -18,7 +18,7 @@
 	    <title> GAME </title>
 	</head>
 	<body>
-		<h3 align="center" style="margin: 100px 0;"> NUMBER GAME </h3>
+		<h3 align="center" style="margin: 100px 0;"> GUESS GAME </h3>
 		<form class="form-horizontal" id="submit_number" role="form">
 			<div class="row" id="lbl" disabled="disabled">
 				<label class="control-label col-sm-4" for="input1">Please enter a number between 1 and 1000, here: </label>
