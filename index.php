@@ -1,24 +1,6 @@
 <?php
+	// generate a new random number on pageload
 	$random_number = rand (1, 1000);
-	/*$content = "222";
-	if(isset($_POST["number"]) && !empty($_POST["number"])) {
-		$content = "Your nr. is: ". $_POST['number']. "<br />" . $content ;
-		//$number = $_POST['number'];
-	}*/
-
-
-	/*$errNumber ="";
-	$empty_arr = [];
-	$_SESSION['number'] = $var_value;
-	if(isset($_POST["submit"])) {
-		echo "your nr. is: ". $_REQUEST['number']. "<br />";
-		//$number = $_POST['number'];
-	}*/
-	/*
-	$var_value = [];
-	$_SESSION['number'] = $var_value;
-	$var_value = $_REQUEST['number'];
-	echo "Your last number was: " . $var_value; */
 ?>
 
 <!DOCTYPE html>
@@ -45,6 +27,7 @@
 			            <input class="form-control" id="number" name="number" type="number" min="1" max="1000" required="">
 			            <span class="input-group-btn">
 			                <button id="submit_button" class="btn btn-default" type="submit"> <b>Guess my number!</b></button>
+			                <button id="restart_button" class="btn btn-default" type="button" onClick="document.location.reload(true)" style="display: none;"> <b>Restart game</b></button>
 			            </span>
 			        </div>
 			    </div>
@@ -67,8 +50,6 @@
 		var generated_random_number = <?= $random_number; ?>;
 		var new_content 			= 'You entered: <strong>' + number + "</strong><br/>";
 
-
-
     	if (number < generated_random_number) {
     		var diff = Math.trunc(generated_random_number / number);
 			
@@ -80,16 +61,19 @@
     		new_content += "<strong> My number is "+(diff > 1 ? (diff+"x ") : "")+"smaller.</strong>";
 
     	} else {
-    		new_content += "<strong> !! CONGRATS !! You guessed my number.";
-
+    		new_content += "<strong> CONGRATS!! You guessed my number!!" ;
+    		/*<a href='http://localhost/jocnumar/index.php'>Restart game</a>*/
     		$("#number").attr('disabled', 'disabled');
-    		$("#submit_button").attr('disabled', 'disabled');
-    	}
+    		$("#submit_button").attr('disabled', 'disabled').css('display', 'none');
+
+    		$("#restart_button").css('display', 'block');
+    	}    	
 
     	new_content += "<br/><hr/>" + current_content;
 
     	$("#message_container").html(new_content);
     	$("#number").val('');
+
 
 		/*$.ajax({
 		    'url' : 'handler.php',
@@ -106,8 +90,6 @@
 		    	$("#message_container").html(new_content);
 		    	$("#number").val('');
 		    },
-
-
 		});*/
 	});
 
